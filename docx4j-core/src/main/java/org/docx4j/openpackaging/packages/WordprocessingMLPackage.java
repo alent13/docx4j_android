@@ -511,9 +511,12 @@ public class WordprocessingMLPackage extends OpcPackage {
 	@Override
 	protected void finalize() throws Throwable {
 		try {
-			FontTablePart ftp = this.getMainDocumentPart().getFontTablePart();
-			if (ftp != null) {
-				ftp.deleteEmbeddedFontTempFiles();
+			MainDocumentPart mainPart = this.getMainDocumentPart();
+			if (mainPart != null) {
+				FontTablePart ftp = mainPart.getFontTablePart();
+				if (ftp != null) {
+					ftp.deleteEmbeddedFontTempFiles();
+				}
 			}
 		} finally {
 			super.finalize();

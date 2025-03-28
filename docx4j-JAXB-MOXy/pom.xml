@@ -66,6 +66,40 @@
 					<rulesUri>file:///${project.basedir}/rules.xml</rulesUri>
 				</configuration>
 			</plugin> 
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.6.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<shadedArtifactAttached>true</shadedArtifactAttached>
+							<shadedClassifierName>withdependencies</shadedClassifierName>							<!-- Any name that makes sense -->
+
+							<artifactSet>
+								<excludes>
+									<exclude>com.google.errorprone:*</exclude>
+								</excludes>
+							</artifactSet>
+
+							<!-- <minimizeJar>true</minimizeJar> -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		
 	</plugins>
 </build>

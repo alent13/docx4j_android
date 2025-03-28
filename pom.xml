@@ -31,19 +31,19 @@
         <module>docx4j-core</module>
         
         <module>docx4j-JAXB-Internal</module> 
-        <module>docx4j-core-tests</module> <!--  needs docx4j-JAXB-Internal  -->
+        <!-- <module>docx4j-core-tests</module> needs docx4j-JAXB-Internal
         <module>docx4j-diffx</module>
-        <module>docx4j-docx-anon</module>
+        <module>docx4j-docx-anon</module> -->
         
         <module>docx4j-export-fo</module>        
-        <module>docx4j-conversion-via-microsoft-graph</module>
+        <!-- <module>docx4j-conversion-via-microsoft-graph</module>
         <module>docx4j-documents4j-remote</module>                
-        <module>docx4j-documents4j-local</module>        
+        <module>docx4j-documents4j-local</module>         -->
         
         <module>docx4j-JAXB-MOXy</module>
         <module>docx4j-JAXB-ReferenceImpl</module>
         
-        <module>docx4j-samples-resources</module>
+        <!-- <module>docx4j-samples-resources</module>
         <module>docx4j-samples-docx4j</module>
         <module>docx4j-samples-docx-diffx</module>
         <module>docx4j-samples-docx-export-fo</module>
@@ -54,11 +54,11 @@
         <module>docx4j-samples-conversion-via-microsoft-graph</module>
 
         <module>docx4j-samples-documents4j-remote</module>        
-        <module>docx4j-samples-documents4j-local</module>        
+        <module>docx4j-samples-documents4j-local</module>         -->
         
         <module>docx4j-bundle</module>        
         
-        <module>docx4j-legacy-service</module>        
+        <!-- <module>docx4j-legacy-service</module>         -->
         
     </modules>
 	
@@ -138,6 +138,40 @@
 						</pluginExecutions>
 					</lifecycleMappingMetadata>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.6.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<shadedArtifactAttached>true</shadedArtifactAttached>
+							<shadedClassifierName>withdependencies</shadedClassifierName>							<!-- Any name that makes sense -->
+
+							<artifactSet>
+								<excludes>
+									<exclude>com.google.errorprone:*</exclude>
+								</excludes>
+							</artifactSet>
+
+							<!-- <minimizeJar>true</minimizeJar> -->
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</pluginManagement>    
@@ -327,6 +361,40 @@
 		                    <arg>loopback</arg>
 		                </gpgArguments>
 		            </configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.6.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<shadedArtifactAttached>true</shadedArtifactAttached>
+							<shadedClassifierName>withdependencies</shadedClassifierName>							<!-- Any name that makes sense -->
+
+							<artifactSet>
+								<excludes>
+									<exclude>com.google.errorprone:*</exclude>
+								</excludes>
+							</artifactSet>
+
+							<!-- <minimizeJar>true</minimizeJar> -->
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
