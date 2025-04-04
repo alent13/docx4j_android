@@ -21,27 +21,25 @@
 
 package org.docx4j;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import org.apache.commons.io.IOUtils;
+import org.docx4j.jaxb.*;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.parts.JaxbXmlPart;
+import org.docx4j.org.apache.camel.support.builder.xml.StAX2SAXSource;
+import org.docx4j.org.apache.xalan.processor.TransformerFactoryImpl;
+import org.docx4j.org.apache.xml.security.Init;
+import org.docx4j.org.apache.xml.security.c14n.CanonicalizationException;
+import org.docx4j.org.apache.xml.security.c14n.Canonicalizer;
+import org.docx4j.org.apache.xml.security.c14n.InvalidCanonicalizerException;
+import org.docx4j.utils.XPathFactoryUtil;
+import org.docx4j.utils.XmlSerializerUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.*;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
-import javax.xml.bind.Binder;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.UnmarshalException;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.*;
 import javax.xml.bind.util.JAXBResult;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.crypto.dsig.CanonicalizationMethod;
@@ -54,44 +52,15 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.ErrorListener;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stax.StAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-
-import org.apache.commons.io.IOUtils;
-import org.docx4j.jaxb.Context;
-import org.docx4j.jaxb.JAXBAssociation;
-import org.docx4j.jaxb.JaxbValidationEventHandler;
-import org.docx4j.jaxb.McIgnorableNamespaceDeclarator;
-import org.docx4j.jaxb.NamespacePrefixMapperUtils;
-import org.docx4j.jaxb.NamespacePrefixMappings;
-import org.docx4j.jaxb.XPathBinderAssociationIsPartialException;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.parts.JaxbXmlPart;
-import org.docx4j.org.apache.camel.support.builder.xml.StAX2SAXSource;
-import org.docx4j.org.apache.xml.security.Init;
-import org.docx4j.org.apache.xml.security.c14n.CanonicalizationException;
-import org.docx4j.org.apache.xml.security.c14n.Canonicalizer;
-import org.docx4j.org.apache.xml.security.c14n.InvalidCanonicalizerException;
-import org.docx4j.utils.XPathFactoryUtil;
-import org.docx4j.utils.XmlSerializerUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+import java.io.*;
+import java.util.*;
 
 public class XmlUtils {
 	
@@ -334,9 +303,9 @@ public class XmlUtils {
 					TRANSFORMER_FACTORY_PROCESSOR_XALAN);
 //					TRANSFORMER_FACTORY_SAXON);
 			
-			transformerFactory = javax.xml.transform.TransformerFactory
-					.newInstance();
-			
+//			transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+			transformerFactory = new TransformerFactoryImpl();
+
 			// We've got our factory now, so set it back again!
 			if (originalSystemProperty == null) {
 				System.clearProperty("javax.xml.transform.TransformerFactory");
@@ -357,13 +326,12 @@ public class XmlUtils {
 						originalSystemProperty);
 			}
 			
-			transformerFactory = javax.xml.transform.TransformerFactory
-			.newInstance();
+//			transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+			transformerFactory = new TransformerFactoryImpl();
 		}
 		
 		LoggingErrorListener errorListener = new LoggingErrorListener(false);
 		transformerFactory.setErrorListener(errorListener);
-		
 	}
 	
 

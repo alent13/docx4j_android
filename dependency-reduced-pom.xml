@@ -375,9 +375,7 @@
     <module>docx4j-openxml-objects-pml</module>
     <module>docx4j-openxml-objects-sml</module>
     <module>docx4j-core</module>
-    <module>docx4j-JAXB-Internal</module>
     <module>docx4j-export-fo</module>
-    <module>docx4j-JAXB-MOXy</module>
     <module>docx4j-JAXB-ReferenceImpl</module>
     <module>docx4j-bundle</module>
   </modules>

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-	<groupId>org.docx4j</groupId>
-	<artifactId>docx4j-parent</artifactId>
-	<version>${revision}</version>
-  </parent>
-  
-	<artifactId>docx4j-openxml-objects</artifactId>
-	<packaging>${packaging.type}</packaging>
-	<name>docx4j-openxml-objects</name>
-	
-	<description>Our JAXB representation of OpenXML, except for pml and sml (handled separately)</description>
+    <parent>
+        <groupId>org.docx4j</groupId>
+        <artifactId>docx4j-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
 
-	<build>	
-         <plugins>
+    <artifactId>docx4j-openxml-objects</artifactId>
+    <packaging>${packaging.type}</packaging>
+    <name>docx4j-openxml-objects</name>
+
+    <description>Our JAXB representation of OpenXML, except for pml and sml (handled separately)</description>
+
+    <build>
+        <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -24,71 +25,45 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                    	<Manifest-Version>2.0</Manifest-Version>
+                        <Manifest-Version>2.0</Manifest-Version>
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Bundle-Version>${project.version}</Bundle-Version>
-<!--                         
-                        <Embed-Dependency>
-                            *;scope=compile|runtime;inline=false
-                        </Embed-Dependency>
-                        <Embed-Transitive>true</Embed-Transitive>
-                        <Import-Package>
+                        <!--
+                                                <Embed-Dependency>
+                                                    *;scope=compile|runtime;inline=false
+                                                </Embed-Dependency>
+                                                <Embed-Transitive>true</Embed-Transitive>
+                                                <Import-Package>
 
-                            org.slf4j;version="[1.6,2)";resolution:=optional,
-                            org.slf4j.impl;version="[1.6,2)";resolution:=optional,
-                            
-                            javax.xml.bind,
-                            javax.xml.bind.util,
-                            javax.xml.bind.annotation,
-                            javax.xml.bind.annotation.adapters,
-                            javax.xml.bind.attachment,
-                            javax.xml.bind.helpers,
-                        </Import-Package>
- -->                        
+                                                    org.slf4j;version="[1.6,2)";resolution:=optional,
+                                                    org.slf4j.impl;version="[1.6,2)";resolution:=optional,
+
+                                                    javax.xml.bind,
+                                                    javax.xml.bind.util,
+                                                    javax.xml.bind.annotation,
+                                                    javax.xml.bind.annotation.adapters,
+                                                    javax.xml.bind.attachment,
+                                                    javax.xml.bind.helpers,
+                                                </Import-Package>
+                         -->
                         <Export-Package>
                             org.docx4j.*,
                             org.jvnet.jaxb2_commons.ppp
                         </Export-Package>
                     </instructions>
                 </configuration>
-            </plugin>	
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.6.0</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<shadedArtifactAttached>true</shadedArtifactAttached>
-							<shadedClassifierName>withdependencies</shadedClassifierName>							<!-- Any name that makes sense -->
-
-							<artifactSet>
-								<excludes>
-									<exclude>com.google.errorprone:*</exclude>
-								</excludes>
-							</artifactSet>
-
-							<!-- <minimizeJar>true</minimizeJar> -->
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>			
- 			
-		</plugins>
-</build>	
+        </plugins>
+    </build>
 
 </project>

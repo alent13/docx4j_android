@@ -19,15 +19,19 @@
  */
 package org.docx4j.convert.out;
 
-import java.io.File;
-
 import org.docx4j.convert.out.fopconf.Fop;
 import org.docx4j.fonts.fop.util.FopConfigUtil;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.OpcPackage;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.org.apache.xalan.templates.StylesheetRoot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.File;
 
 /** This class contains the configuration for the conversion process.<br>
  *  The conversion is done in two steps: 
@@ -75,11 +79,28 @@ public class FOSettings extends AbstractConversionSettings {
 	
 	public FOSettings() {
 		super();
+
+		try {
+			this.setCustomXsltTemplates(new StylesheetRoot(new ErrorListener() {
+				public void warning(TransformerException e) throws TransformerException {
+				}
+
+				public void error(TransformerException e) throws TransformerException {
+				}
+
+				public void fatalError(TransformerException e) throws TransformerException {
+				}
+			}));
+		} catch (TransformerConfigurationException var2) {
+			TransformerConfigurationException e = var2;
+			throw new RuntimeException(e);
+		}
 		addFeatures(ConversionFeatures.DEFAULT_PDF_FEATURES);
 	}
 
 	public FOSettings(OpcPackage opcPackage) throws Docx4JException {
 		super();
+
 		addFeatures(ConversionFeatures.DEFAULT_PDF_FEATURES);
 		this.setOpcPackage(opcPackage);		
 	}
